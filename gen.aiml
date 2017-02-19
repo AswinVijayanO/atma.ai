@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="1.0">
+<!-- -->
+<!-- Free software (c) 2011 ALICE A.I. Foundation.   -->
+<!-- This program is open source code released under -->
+<!-- the terms of the GNU General Public License     -->
+<!-- as published by the Free Software Foundation.   -->
+<!-- Complies with AIML 1.0 Tag Set Specification -->
+<!-- as adopted by the ALICE A.I. Foundation.  -->
+<!-- Last modified 12/17/2011 -->
+<!-- -->
+<!--if then else with MAP (pair: Q and A) answer: yes-->
+<category>
+ <pattern>$DO YOU KNOW THE CAPITAL OF <set>state</set></pattern>
+ <template>
+  <map name="state2capital"><star/></map> is the capital of <star/>
+ </template>
+</category>
+
+<!--if then else with MAP (pair: Q and A) answer: yes-->
+<category>
+ <pattern>$DO YOU KNOW THE CAPITAL OF *</pattern>
+ <template>
+  I have no idea the capital of <star/>
+ </template>
+<!--if then else with SET (list) answer: yes-->
+<category>
+ <pattern>$IS <set>color</set> A COLOR</pattern>
+ <template>Yup ! <star/> is a color. </template>
+</category>
+
+<!--if then else with SET (list) answer: No-->
+<category>
+ <pattern>$IS * A COLOR</pattern>
+ <template>Nah ! <star/> is not a color.</template>
+</category>
+
+<!--Execute, Trigger and Run -->
+<category>
+ <pattern>RUN *</pattern>
+ <template>run <star/></template>
+</category>
+
+<!--Execute, Trigger and Run -->
+<category>
+ <pattern>EXECUTE *</pattern>
+ <template>run <star/></template>
+</category>
+
+<!--Execute, Trigger and Run -->
+<category>
+ <pattern>TRIGGER *</pattern>
+ <template>run <star/></template>
+</category>
+</aiml>
