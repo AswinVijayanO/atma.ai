@@ -1,7 +1,38 @@
 import sys, glob
 import aiml
 import os
+import datetime
+def appopen( str ):
+ os.system(" cd /usr/share/applications && find -iname '*"+str+"*'>op.txt" )
+ fil = open("/usr/share/applications/op.txt","r") 
+ str = fil.read() 
+ s=str.replace("./","")
+ s=s.replace("\n","")
+ print(str)
+ fil2= open("/usr/share/applications/"+s,"r")
+ for line in fil2:
+    if "Exec=" in line: 
+      st=line.split('=', 1)[1]
+      st=st.split(' ', 1)[0]
+      print(st)
+ os.system("espeak -ven-us+f1  ' opening "+str+"'")
+ os.system(st)     
+ return st
+sessionId = 12345
 kernel = aiml.Kernel()
+if os.path.isfile("bot_brain.brn"):
+    kernel.bootstrap(brainFile = "bot_brain.brn")
+else:
+    kernel.bootstrap(learnFiles = "std-startup.xml", commands = "load aiml b")
+    kernel.saveBrain("bot_brain.brn")
+sessionData = kernel.getSessionData(sessionId)
+kernel.setPredicate("name", "Aswin", sessionId)
+kernel.setBotPredicate("name","Atma")
+kernel.setBotPredicate("age","20")
+kernel.setBotPredicate("home","this pc")
+kernel.setBotPredicate("master","Aswin")
+kernel.setBotPredicate("client_name","Aswin")
+kernel.setBotPredicate("hometown", "calicut")
 kernel.learn("botai/bot-startup.xml")
 kernel.learn("botai/ai.aiml")
 kernel.learn("botai/AI.aiml")
@@ -79,17 +110,33 @@ kernel.learn("botai/gen.aiml")
 kernel.learn("botai/wordplay.aiml")
 kernel.respond("LOAD AIML B")
 print ("\nHi im atma")
+now = datetime.datetime.now()
+if now.hour>21:
+ tim = "good night"
+elif now.hour>=18:
+ tim = "good evening"
+elif now.hour>12:
+ tim = "good afternoon"
+else:
+ tim = "good morning!"
+print(tim)
+os.system("espeak -ven-us+f2  'Hi im atma"+tim+"'")
 while True:
  #print(kernel.respond(str(input("> "))))
  s=input("> ")
- if s == "good night":
+ st=s.split(' ', 1)[0]
+ if s in  {"good bye","bye bye","good night","bye","good night","sleep"}:
   exit()
- elif s == "save it":
+ elif s in {"save it","learn that","remember that"}:
   kernel.saveBrain("bot_brain.brn")
+ elif st== "open":
+  st=s.split(' ', 1)[1]
+  appopen(st)
  else:
-  st = kernel.respond(str(s))
+  st = kernel.respond(str(s),sessionId)
  print(st)
- os.system("espeak -ven-us+f4 -s170  '"+st+"'")
+ st = st.replace("'", "")
+ os.system("espeak -ven-us+f1  '"+st+"'")
 
     
      
